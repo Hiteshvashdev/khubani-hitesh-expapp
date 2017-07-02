@@ -1,0 +1,90 @@
+<div class="container-box">
+	<h1>Expense sheet:</h1>
+    <div class="row-container">
+        <button data-ng-click="main.createExpense()">New Expense</button>
+    </div>
+    <div class="wrapper">
+        <div class="table-container" data-ng-if="main.expenseDatasource.length>0">
+            <table class='table'>
+                <thead>
+                    <tr>                       
+                        <th>Merchant</th>
+                        <th>Expense </th>
+                        <th>Expense Date</th>                        
+                        <th>Status </th>
+                        <th>Message </th>
+                        <th>Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="(key,value) in main.expenseDatasource">                        
+                        <td>{{value.Name}}</td>
+                        <td>{{value.Total_Expense}}</td>
+                        <td>{{value.Expense_Date | date : "shortDate"}}</td>
+                        <td>{{value.ExpenseStatus}}</td>                        
+                        <td class="td-wrap" title="{{value.Message}}">{{value.Message}}</td>
+                        <td>
+                            <span class="link" ng-class="{disabled: value.ExpenseStatus =='Reimbursed', new: value.ExpenseStatus =='New'}"
+                            data-ng-click="main.editExpense(value)">Edit</span>
+                            <span class="link" ng-class="{disabled: value.ExpenseStatus =='Reimbursed', new: value.ExpenseStatus =='New'}" data-ng-click="main.deleteExpense(value)">Delete</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="form-container" data-ng-if="main.isAddFormVisible">
+            <form role="form" name="expenseForm" novalidate>
+                <h1>New Expense Form</h1>
+                <ul class="form-field">
+                    <li>
+                        <label>Merchant Name <span class="required">*</span></label>
+                        <input type="text" name="Name" class="field-long" ng-model="main.expenseForm.Name" autocomplete="off" maxlength="50" placeholder="Merchant Name" required/>
+                        <!-- Validation Block -->
+                        <div class="help-block required" ng-messages="expenseForm.Name.$error" data-ng-if="((expenseForm.$submitted || !expenseForm.Name.$pristine) && expenseForm.Name.$error)">
+                            <p ng-message="required">Merchant Name is required.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <label>Total Expense <span class="required">*</span></label>
+                        <input type="number" name="Total_Expense" class="field-long" ng-model="main.expenseForm.Total_Expense" maxlength="15" min="0" placeholder="Total Expense(including tax, i.e tax in not a seperate field)" required/>
+                        <!-- Validation Block -->
+                        <div class="help-block required" ng-messages="expenseForm.Total_Expense.$error" data-ng-if="((expenseForm.$submitted || !expenseForm.Total_Expense.$pristine) && expenseForm.Total_Expense.$error)">
+                            <p ng-message="required">Total Expense is required.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <label>Expense Occurred Date<span class="required">*</span></label>
+                        <input type="date" name="Expense_Date" class="field-long" ng-model="main.expenseForm.Expense_Date" placeholder="required" required/>
+                        <!-- Validation Block -->
+                        <div class="help-block required" ng-messages="expenseForm.Expense_Date.$error" data-ng-if="((expenseForm.$submitted || !expenseForm.Expense_Date.$pristine) && expenseForm.Expense_Date.$error)">
+                            <p ng-message="required">Expense Occurred Date is required.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <label>Your Message <span class="required">*</span></label>
+                        <textarea name="Message" class="field-long field-textarea" ng-model="main.expenseForm.Message" autocomplete="off" maxlength="500" placeholder="Your Message" required></textarea>
+                        <!-- Validation Block -->
+                        <div class="help-block required" ng-messages="expenseForm.Message.$error" data-ng-if="((expenseForm.$submitted || !expenseForm.Message.$pristine) && expenseForm.Message.$error)">
+                            <p ng-message="required">Your Message is required.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="ExpenseStatus" 
+                            ng-model="main.expenseForm.ExpenseStatus" value="New"/> New 
+                        </label>
+                        <label ng-if="main.isEditFlow">
+                            <input type="radio" name="ExpenseStatus" ng-model="main.expenseForm.ExpenseStatus" value="Reimbursed"/> Reimbursed 
+                        </label>
+                    </li>
+                    <li>
+                        <button data-ng-click="main.saveExpense(expenseForm)">Save</button>
+                        <button data-ng-click="main.resetExpense(expenseForm)">Cancel</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+    </div>
+</div>
