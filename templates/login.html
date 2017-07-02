@@ -1,0 +1,30 @@
+<div class="container-center">
+    <form role="form" name="signInForm" novalidate>
+        <ul class="form-field">
+            <li>
+                <label>User Name <span class="required">*</span></label>
+                <input type="text" name="userName" ng-model="main.signInForm.userName" class="field-long" autocomplete="off" maxlength="50" placeholder="User Name" required/>
+
+                <!-- Validation Block -->
+                <div class="help-block required" ng-messages="signInForm.userName.$error" data-ng-if="((signInForm.$submitted || !signInForm.userName.$pristine) && signInForm.userName.$error)">
+                    <p ng-message="required">User Name is required.</p>
+                </div>
+            </li>
+            <li>
+                <label>Password <span class="required">*</span></label>
+                <input type="password" name="passwordStr" ng-model="main.signInForm.passwordStr" class="field-long" autocomplete="off" maxlength="50"  required/>
+                <!-- Validation Block -->
+                <div class="help-block required" ng-messages="signInForm.passwordStr.$error" data-ng-if="((signInForm.$submitted || !signInForm.passwordStr.$pristine) && signInForm.passwordStr.$error)">
+                    <p ng-message="required">Password is required.</p>
+                </div>
+            </li>
+            <li ng-if="main.errorMsg">
+                <span class="required">invalid credentials</span>
+            </li>
+            <li>
+                <button type="submit" data-ng-click="main.login(signInForm)">SignIn</button>
+                <button type="button" data-ng-click="main.resetForm(signInForm)">Reset</button>
+            </li>
+        </ul>
+    </form>
+</div>
